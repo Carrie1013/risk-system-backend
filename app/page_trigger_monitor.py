@@ -23,9 +23,19 @@ def compute_trigger_monitor(etfs: list[dict], params: dict) -> dict:
     if len(common) < 2:
         raise ValueError("Need at least two valid ETF histories.")
 
-    weights = np.array([weights[tickers.index(t)] for t in common], dtype=float)
+    aligned = ret_df[common].copy()
+    valid_counts = aligned.notna().sum()
+    min_obs = max(26, int(len(aligned) * 0.35))
+    usable = [t for t in common if int(valid_counts.get(t, 0)) >= min_obs]
+    if len(usable) < 2:
+        raise ValueError("Not enough overlapping ETF history for this portfolio preset.")
+
+    weights = np.array([weights[tickers.index(t)] for t in usable], dtype=float)
     weights = weights / weights.sum()
-    ret_df = ret_df[common].dropna()
+    ret_df = aligned[usable].dropna()
+    if len(ret_df) < 12:
+        raise ValueError("Not enough common weekly observations after aligning ETF histories.")
+
     port = ret_df.mul(weights, axis=1).sum(axis=1)
 
     sw = int(params["sw"])
@@ -97,14 +107,19 @@ def compute_trigger_monitor(etfs: list[dict], params: dict) -> dict:
             }
         )
 
-    last_vote = int(votes.dropna().iloc[-1])
-    last_fv = float(fwd_vol.dropna().iloc[-1])
-    med_fv = float(fwd_vol.dropna().median())
+    vote_clean = votes.dropna()
+    fwd_clean = fwd_vol.dropna()
+    if vote_clean.empty or fwd_clean.empty:
+        raise ValueError("Not enough observations to compute trigger statistics for this portfolio.")
+
+    last_vote = int(vote_clean.iloc[-1])
+    last_fv = float(fwd_clean.iloc[-1])
+    med_fv = float(fwd_clean.median())
     last_event = events[-1] if events else None
 
     return {
         "dates": [d.strftime("%Y-%m-%d") for d in port.index],
-        "portfolio": common,
+        "portfolio": usable,
         "weights": [round(float(w), 4) for w in weights],
         "stats": {
             "risk_state": "TRIGGERED" if last_vote >= mv else "Normal",
