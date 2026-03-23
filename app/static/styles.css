@@ -1,0 +1,261 @@
+:root {
+  --bg: #06070c;
+  --panel: rgba(12, 16, 30, 0.86);
+  --panel-strong: rgba(16, 19, 38, 0.96);
+  --text: #f5f7ff;
+  --muted: #adb8db;
+  --blue: #4ea1ff;
+  --violet: #8f7cff;
+  --violet-soft: #c7bcff;
+  --line: rgba(255, 255, 255, 0.08);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --radius: 22px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(78, 161, 255, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(143, 124, 255, 0.22), transparent 24%),
+    linear-gradient(180deg, #04050a 0%, #0b1020 45%, #05060b 100%);
+}
+
+.page-shell {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+.hero-copy,
+.hero-panel,
+.panel,
+.summary-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+
+.hero-copy {
+  padding: 34px;
+  min-height: 280px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--violet-soft);
+  font-size: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: 0.95;
+}
+
+.lede {
+  margin-top: 18px;
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+}
+
+.glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(40px);
+  opacity: 0.4;
+}
+
+.glow-a {
+  width: 220px;
+  height: 220px;
+  right: -40px;
+  top: -50px;
+  background: rgba(78, 161, 255, 0.45);
+}
+
+.glow-b {
+  width: 160px;
+  height: 160px;
+  left: 30px;
+  bottom: -55px;
+  background: rgba(143, 124, 255, 0.42);
+}
+
+form {
+  position: relative;
+  z-index: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+textarea,
+select,
+button {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(4, 7, 16, 0.92);
+  color: var(--text);
+  padding: 14px 16px;
+  font-size: 0.97rem;
+}
+
+textarea { resize: vertical; min-height: 110px; }
+
+button {
+  background: linear-gradient(120deg, var(--blue), var(--violet));
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(98, 125, 255, 0.35);
+}
+
+.inline-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-note {
+  margin: 12px 2px 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  padding: 18px;
+}
+
+.summary-card .label {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.summary-card .value {
+  margin-top: 12px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.summary-card .sub {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.panel {
+  padding: 18px 18px 10px;
+  min-height: 340px;
+}
+
+.panel.wide {
+  min-height: 220px;
+}
+
+.panel-head {
+  margin-bottom: 12px;
+}
+
+.panel-head h2 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.panel-head p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+#trigger-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#trigger-table th,
+#trigger-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.pill {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pill.on {
+  background: rgba(143, 124, 255, 0.22);
+  color: #d7cfff;
+}
+
+.pill.off {
+  background: rgba(78, 161, 255, 0.14);
+  color: #afd2ff;
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .page-shell { padding: 16px; }
+  .summary-strip,
+  .inline-grid {
+    grid-template-columns: 1fr;
+  }
+}

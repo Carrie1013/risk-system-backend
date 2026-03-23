@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Risk Change Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css?v=3">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Black / Blue / Violet / White</p>
+        <h1>Risk Change Dashboard</h1>
+        <p class="lede">
+          Quantify regime shifts across volatility, correlation, covariance drift,
+          eigenvalue concentration, Frobenius distance, and GARCH conditional drift.
+        </p>
+      </div>
+      <div class="hero-panel">
+        <div class="glow glow-a"></div>
+        <div class="glow glow-b"></div>
+        <form id="analysis-form">
+          <label>
+            ETF List
+            <textarea id="tickers" rows="4" placeholder="SPY, TLT, GLD, LQD, XLF, VNQ">BIL,TFLO,SPTL,LQD,GLDM,VTV,VUG,IEMG,VNQ</textarea>
+          </label>
+          <div class="inline-grid">
+            <label>
+              Frequency
+              <select id="frequency">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </label>
+            <label>
+              Window
+              <input id="window_value" type="number" min="2" step="1" value="52" placeholder="52">
+            </label>
+          </div>
+          <button type="submit" id="run-btn">Run Dashboard</button>
+          <p class="form-note">Yahoo Finance is used as the live data source.</p>
+        </form>
+      </div>
+    </header>
+
+    <section class="summary-strip" id="summary-strip"></section>
+
+    <section class="panel-grid">
+      <article class="panel wide">
+        <div class="panel-head">
+          <h2>Trigger Matrix</h2>
+          <p>Thresholds default to each metric's rolling 90th percentile.</p>
+        </div>
+        <div id="trigger-table"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Equal-Weight Return</h2>
+          <p>Portfolio-level return baseline.</p>
+        </div>
+        <div id="chart-ew"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Risk Percentile</h2>
+          <p>Recent rolling vol vs. historical distribution.</p>
+        </div>
+        <div id="chart-risk"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Correlation Percentile</h2>
+          <p>Average pairwise correlation regime.</p>
+        </div>
+        <div id="chart-corr"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Covariance Drift</h2>
+          <p>Relative matrix movement window to window.</p>
+        </div>
+        <div id="chart-cov"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Eigen Structure</h2>
+          <p>Concentration and effective rank.</p>
+        </div>
+        <div id="chart-eig"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>F-Distance</h2>
+          <p>Raw Frobenius norm drift.</p>
+        </div>
+        <div id="chart-fdist"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h2>GARCH Conditional Drift</h2>
+          <p>Absolute change in conditional volatility.</p>
+        </div>
+        <div id="chart-garch"></div>
+      </article>
+    </section>
+  </div>
+
+  <script src="/static/app.js?v=3"></script>
+</body>
+</html>
