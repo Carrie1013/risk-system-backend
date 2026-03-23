@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from fear_and_greed.cnn import Fetcher
 
+from app.cache import ttl_cache
 from app.risk_system_sources import json_multi, to_weekly_prices, to_weekly_returns, cov_to_corr
 
 
@@ -34,6 +35,12 @@ US_ASSETS = {
 }
 
 
+@ttl_cache(ttl_seconds=900, maxsize=8)
+def fetch_fear_greed() -> dict:
+    return Fetcher()()
+
+
+@ttl_cache(ttl_seconds=600, maxsize=24)
 def compute_market_sentiment(selected_assets: list[str] | None = None, window: int = 4) -> dict:
     selected_assets = selected_assets or ["spy", "qqq", "tlt", "gld", "hyg"]
     all_tickers = [v[1] for v in GLOBAL_MARKETS.values()] + [v[1] for v in US_ASSETS.values()]
@@ -63,7 +70,7 @@ def compute_market_sentiment(selected_assets: list[str] | None = None, window: i
     cov = win_ret.cov().values
     corr = cov_to_corr(cov)
 
-    fg_resp = Fetcher()()
+    fg_resp = fetch_fear_greed()
     fg_now = fg_resp["fear_and_greed"]
     fg_hist = fg_resp["fear_and_greed_historical"]["data"]
     fg_series = [

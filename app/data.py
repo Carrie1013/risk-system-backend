@@ -5,6 +5,8 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
+from app.cache import ttl_cache
+
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = ROOT / ".yfinance_cache"
@@ -16,10 +18,12 @@ if hasattr(yf, "set_tz_cache_location"):
     yf.set_tz_cache_location(str(CACHE_DIR / "tz"))
 
 
+@ttl_cache(ttl_seconds=900, maxsize=64)
 def fetch_adjusted_prices(tickers: list[str]) -> pd.DataFrame:
     if not tickers:
         raise ValueError("At least one ticker is required.")
 
+    tickers = [str(t).upper() for t in tickers]
     raw = yf.download(
         tickers=tickers,
         period="max",

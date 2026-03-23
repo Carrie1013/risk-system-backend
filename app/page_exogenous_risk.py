@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from app.cache import ttl_cache
 from app.risk_system_sources import (
     align_weekly,
     garch_like_vol,
@@ -14,6 +15,7 @@ from app.risk_system_sources import (
 )
 
 
+@ttl_cache(ttl_seconds=600, maxsize=16)
 def compute_exogenous_risk(period_weeks: int = 1) -> dict:
     period_weeks = max(1, min(int(period_weeks), 26))
     y_tickers = ["^VIX", "^VVIX", "^MOVE", "^VIX3M", "DX-Y.NYB", "VTI"]
